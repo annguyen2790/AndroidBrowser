@@ -15,9 +15,12 @@ import android.widget.ImageButton;
 public class BrowserControlFragment extends Fragment {
 
     ImageButton addButton;
-
+    browserControlListener browserControlListener;
     public BrowserControlFragment() {
         // Required empty public constructor
+    }
+    interface browserControlListener{
+        void openNewPage();
     }
 
 
@@ -27,6 +30,12 @@ public class BrowserControlFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_browser_control, container, false);
         addButton = view.findViewById(R.id.addTabButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
         return view;
     }
 }

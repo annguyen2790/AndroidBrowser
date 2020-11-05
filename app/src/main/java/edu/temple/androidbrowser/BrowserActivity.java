@@ -14,6 +14,7 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
     PageControlFragment pageControlFragment;
     PageViewerFragment pageViewerFragment;
     BrowserControlFragment browserControlFragment;
+    PageListFragment pageListFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,15 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
                     .add(R.id.browser_control, browserControlFragment)
                     .commit();
         }
+        if((temp = fragmentManager.findFragmentById(R.id.page_list) )instanceof PageListFragment){
+            pageListFragment = (PageListFragment) temp;
+        }else{
+            pageListFragment = new PageListFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.page_list, pageListFragment)
+                    .commit();
+        }
+
 
     }
 
