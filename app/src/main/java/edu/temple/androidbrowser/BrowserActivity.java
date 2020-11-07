@@ -9,19 +9,20 @@ import android.os.Bundle;
 import android.view.Window;
 import android.webkit.WebView;
 
-public class BrowserActivity extends AppCompatActivity implements PageViewerFragment.browswerInterface, PageControlFragment.PageControlListener {
+public class BrowserActivity extends AppCompatActivity implements PageViewerFragment.browswerInterface,
+            PageControlFragment.PageControlListener, BrowserControlFragment.browserControlListener {
     FragmentManager fragmentManager;
     PageControlFragment pageControlFragment;
-    PageViewerFragment pageViewerFragment;
     BrowserControlFragment browserControlFragment;
     PageListFragment pageListFragment;
+    PagerFragment pagerFragment;
+    Fragment temp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
         fragmentManager = getSupportFragmentManager();
-        Fragment temp;
 
         if((temp = fragmentManager.findFragmentById(R.id.page_control)) instanceof PageControlFragment){
             pageControlFragment = (PageControlFragment) temp;
@@ -29,14 +30,6 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
             pageControlFragment = new PageControlFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.page_control, pageControlFragment)
-                    .commit();
-        }
-        if((temp = fragmentManager.findFragmentById(R.id.page_viewer)) instanceof PageViewerFragment){
-            pageViewerFragment = (PageViewerFragment) temp;
-        }else{
-            pageViewerFragment = new PageViewerFragment();
-            fragmentManager.beginTransaction()
-                    .add(R.id.page_viewer, pageViewerFragment)
                     .commit();
         }
 
@@ -57,24 +50,36 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
                     .commit();
         }
 
+        if ((temp = fragmentManager.findFragmentById(R.id.pager)) instanceof PagerFragment){
+            pagerFragment = (PagerFragment) temp;
+        }else {
+            pagerFragment = new PagerFragment();
+            fragmentManager.beginTransaction().
+                    add(R.id.page_viewer, pagerFragment)
+                    .commit();
+
+        }
+
+
+
 
     }
 
     @Override
     public void forwardPress() {
-        WebView wb = pageViewerFragment.webView;
+        WebView wb = pagerFragment.pageViewerFragment.webView;
         wb.goForward();
     }
 
     @Override
     public void backPress() {
-        WebView wb = pageViewerFragment.webView;
+        WebView wb = pagerFragment.pageViewerFragment.webView;
         wb.goBack();
     }
 
     @Override
     public void okPress(CharSequence urlInput) {
-        WebView wb = pageViewerFragment.webView;
+        WebView wb = pagerFragment.pageViewerFragment.webView;
         if(!urlInput.toString().startsWith("https://")){
             wb.loadUrl("https://" + urlInput.toString());
         }else {
@@ -84,7 +89,11 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
 
     @Override
     public void updateURL(String url) {
-        //update url
         pageControlFragment.urlText.setText((CharSequence) url);
+    }
+
+    @Override
+    public void openNewPage() {
+
     }
 }
