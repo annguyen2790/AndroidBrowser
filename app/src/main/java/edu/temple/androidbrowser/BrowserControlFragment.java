@@ -33,7 +33,7 @@ public class BrowserControlFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                browserControlListener.openNewPage();
             }
         });
         return view;

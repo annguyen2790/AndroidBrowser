@@ -20,8 +20,8 @@
 
     <FrameLayout
         android:id="@+id/page_viewer"
-        android:layout_width="403dp"
-        android:layout_height="546dp"
+        android:layout_width="410dp"
+        android:layout_height="572dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
