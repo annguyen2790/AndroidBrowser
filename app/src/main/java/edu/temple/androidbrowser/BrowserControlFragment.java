@@ -23,6 +23,16 @@ public class BrowserControlFragment extends Fragment {
         void openNewPage();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof browserControlListener){
+            browserControlListener = (browserControlListener) context;
+        }else{
+            throw  new RuntimeException("Please implement PageControlListenter");
+        }
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

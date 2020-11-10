@@ -6,11 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 
 public class PagerFragment extends Fragment {
@@ -18,10 +22,14 @@ public class PagerFragment extends Fragment {
     PageViewerFragment pageViewerFragment;
     FragmentManager fragmentManager;
     Fragment temp;
+    ArrayList<PageViewerFragment> viewerFragments;
 
     public PagerFragment() {
         // Required empty public constructor
     }
+
+
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -44,20 +52,26 @@ public class PagerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_pager, container, false);
-        fragmentManager = getChildFragmentManager();
-        if((temp = fragmentManager.findFragmentById(R.id.browserVIEWER)) instanceof PageViewerFragment){
-            pageViewerFragment = (PageViewerFragment) temp;
-
-        }else{
-            pageViewerFragment = new PageViewerFragment();
-            fragmentManager.beginTransaction()
-                    .add(R.id.browserVIEWER, pageViewerFragment)
-                    .commit();
-
-        }
-
+        viewerFragments = new ArrayList<>();
         myViewPager = view.findViewById(R.id.viewPager);
+        myViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+            @NonNull
+            @Override
+            public Fragment getItem(int position) {
+                return viewerFragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return viewerFragments.size();
+            }
+        });
+
+
 
         return view;
+    }
+    public int getCurrentPage(){
+        return myViewPager.getCurrentItem();
     }
 }

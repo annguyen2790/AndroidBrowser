@@ -71,4 +71,21 @@ public class PageViewerFragment extends Fragment {
         }
         return v;
     }
+
+    public void goFor(){
+        webView.goForward();
+    }
+
+    public void goBackward(){
+        webView.goBack();
+    }
+
+    public void okPressed(String url){
+        if(!url.startsWith("https://")){
+            url = "https://" + url;
+            webView.loadUrl(url);
+        }else {
+            webView.loadUrl(url);
+        }
+    }
 }

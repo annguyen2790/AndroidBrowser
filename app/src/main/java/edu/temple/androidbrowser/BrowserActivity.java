@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 
@@ -21,7 +23,15 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
+        addFragments();
 
+
+
+
+
+
+    }
+    public void addFragments(){
         fragmentManager = getSupportFragmentManager();
 
         if((temp = fragmentManager.findFragmentById(R.id.page_control)) instanceof PageControlFragment){
@@ -59,41 +69,45 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
                     .commit();
 
         }
-
-
-
-
     }
 
     @Override
     public void forwardPress() {
-        WebView wb = pagerFragment.pageViewerFragment.webView;
-        wb.goForward();
+        int i  = pagerFragment.myViewPager.getCurrentItem();
+        pagerFragment.viewerFragments.get(i).goFor();
     }
 
     @Override
     public void backPress() {
-        WebView wb = pagerFragment.pageViewerFragment.webView;
-        wb.goBack();
+        int i  = pagerFragment.myViewPager.getCurrentItem();
+        pagerFragment.viewerFragments.get(i).goBackward();
+
     }
 
     @Override
     public void okPress(CharSequence urlInput) {
-        WebView wb = pagerFragment.pageViewerFragment.webView;
-        if(!urlInput.toString().startsWith("https://")){
-            wb.loadUrl("https://" + urlInput.toString());
-        }else {
-            wb.loadUrl(urlInput.toString());
+        int i  = pagerFragment.myViewPager.getCurrentItem();
+        if(pagerFragment.viewerFragments.size() == 0){
+            pagerFragment.viewerFragments.add(new PageViewerFragment());
+            pagerFragment.myViewPager.getAdapter().notifyDataSetChanged();
         }
+        pagerFragment.viewerFragments.get(i).okPressed(urlInput.toString());
     }
 
     @Override
     public void updateURL(String url) {
-        pageControlFragment.urlText.setText((CharSequence) url);
+
     }
 
     @Override
     public void openNewPage() {
-
+        findViewById(R.id.addTabButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pagerFragment.viewerFragments.add(new PageViewerFragment());
+                pagerFragment.myViewPager.getAdapter().notifyDataSetChanged();
+                Log.e("tagw", "openNewPage");
+            }
+        });
     }
 }
