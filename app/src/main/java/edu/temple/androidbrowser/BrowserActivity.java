@@ -92,6 +92,7 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
             pagerFragment.myViewPager.getAdapter().notifyDataSetChanged();
         }
         pagerFragment.viewerFragments.get(i).okPressed(urlInput.toString());
+
     }
 
     @Override
